@@ -1,0 +1,29 @@
+#导入相关的locust 的类，成员
+from locust import HttpLocust, TaskSet, task
+from random import randint
+
+#任务类
+class TestLogin(TaskSet):
+    def on_start(self):
+        self.loginData = [{"v": "1", "month": "10", "day": "1", "key": "4e5e463b73eb8f6895c0b3e5da8d0e93"},
+                     {"v": "1", "month": "1", "day": "1", "key": "4e5e463b73eb8f6895c0b3e5da8d0e93"},
+                     {"v": "1", "month": "9", "day": "1", "key": "4e5e463b73eb8f6895c0b3e5da8d0e93"}]
+        print("-----------------on_start---------------")
+
+    @task
+    def doLogin(self):
+        ranIndex = randint(1, 1000) % len(self.loginData)
+        response = self.client.post("/japi/toh", data=self.loginData[ranIndex], catch_response=True)
+
+        if "请求成功" in response.text:
+            response.success()
+        else:
+            response.failure("try again")
+
+        print(self.loginData[ranIndex]['month'])
+
+
+class WebSite(HttpLocust):
+    task_set = TestLogin
+    min_wait = 1000
+    max_wait = 2000
