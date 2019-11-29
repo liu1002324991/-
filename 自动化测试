@@ -1,0 +1,187 @@
+import os
+import time
+from appium import webdriver
+from selenium.webdriver.common.by import By
+PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
+capabilities = dict()
+# Android平台测试
+capabilities['platformName'] = 'Android'
+# 测试手机版本为6.0
+capabilities['platformVersion'] = '6'
+capabilities['deviceName'] = '741AECR52QV3R'
+# 系统手机中的app的包名
+capabilities['appPackage'] = 'com.shunfengche.ride'
+# 系统手机中的联系人app的主入口activity
+capabilities['appActivity'] = '.activity.LaunchActivity'
+capabilities['unicodeKeyboard'] = 'True'
+capabilities['resetKeyboard'] = 'True'
+capabilities['noReset'] = 'False'
+# ['noReset'] = True 不重置 false 重置应用
+#capabilities['noReset'] = True
+# 连接测试机所在服务器服务器
+driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', capabilities)
+driver.implicitly_wait(30)
+try:
+#     # 获取屏幕的size
+#     size = driver.get_window_size()
+#     print(size)
+#     # 获取屏幕宽度 width
+#     width = size['width']
+#     print(width)
+#     # 获取屏幕高度 height
+#     height = size['height']
+#     print(height)
+#
+#     # 执行滑屏操作,向下（下拉）滑动
+#     x1 = width * 0.5
+#     y1 = height * 0.25
+#     y2 = height * 0.8
+#     time.sleep(3)
+#     print("滑动前")
+#     driver.swipe(x1, y1, x1, y2)
+#     print("滑动后")
+#     # 增加滑动次数，滑动效果不明显，增加滑动次数
+#
+#     for i in range(5):
+#         print("第%d次滑屏" % i)
+#         time.sleep(3)
+#         driver.swipe(x1, y1, x1, y2)
+#     time.sleep(3)
+#
+#
+#     # 封装滑动方法
+#
+#     def swipeUp(driver, n=5):
+#         #定义向上滑动方法
+#         print("定义向上滑动方法")
+#         x1 = width * 0.5
+#         y1 = height * 0.9
+#         y2 = height * 0.25
+#         time.sleep(3)
+#         print("滑动前")
+#         for i in range(n):
+#             print("第%d次滑屏" % i)
+#             time.sleep(3)
+#             driver.swipe(x1, y1, x1, y2)
+#
+#
+#     def swipeDown(driver, n=5):
+#         #定义向下滑动方法
+#         print("定义向下滑动方法")
+#         x1 = width * 0.5
+#         y1 = height * 0.25
+#         y2 = height * 0.9
+#         time.sleep(3)
+#         print("滑动前")
+#         for i in range(n):
+#             print("第%d次滑屏" % i)
+#             time.sleep(3)
+#             driver.swipe(x1, y1, x1, y2)
+#
+#
+#     def swipeLeft(driver, n=3):
+#         #定义向左滑动方法
+#         print("定义向左滑动方法")
+#         x1 = width * 0.8
+#         x2 = width * 0.2
+#         y1 = height * 0.5
+#
+#         time.sleep(3)
+#         print("滑动前")
+#         for i in range(n):
+#             print("第%d次滑屏" % i)
+#             time.sleep(3)
+#             driver.swipe(x1, y1, x2, y1)
+#
+#
+#      def swipeRight(driver, n=5):
+#         #定义向右滑动方法
+#         print("定义向右滑动方法")
+#         x1 = width * 0.2
+#         x2 = width * 0.8
+#         y1 = height * 0.5
+#
+#         time.sleep(3)
+#         print("滑动前")
+#         for i in range(n):
+#             print("第%d次滑屏" % i)
+#             time.sleep(3)
+#             driver.swipe(x1, y1, x2, y1)
+#
+#     if __name__ == '__main__':
+#         swipeUp(driver)
+#         swipeDown(driver)
+#         swipeLeft(driver)
+#         swipeRight(driver)
+    #点击屏幕开始按钮
+    # element = driver.find_element_by_id('com.shunfengche.ride:id/iv_start').click()
+    # time.sleep(2)
+
+    #输入手机号登录
+    element = driver.find_element_by_xpath("//*[@text='请输入手机号']")
+    element.send_keys(15138698671)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_login2_et_code')
+    element.send_keys(8888)
+# com.android.contacts:id/floating_action_button为通过uiautomatorviewer截取联系人界面获取到的
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_login2_btn_login')
+    #如果找到该id所指定控件，则进行点击操作
+    element.click()
+    print('登录完成')
+    time.sleep(3)
+    #点击关闭广告
+    element = driver.find_element_by_id('com.shunfengche.ride:id/iv_close').click()
+    time.sleep(3)
+    #点击手机屏幕坐标-tap
+    def tapHit(driver):
+        time.sleep(3)
+        #点击拼客币
+        driver.tap([(798, 105), (887, 195)], 500)
+        time.sleep(5)
+        #点击退出按钮坐标
+        driver.tap([(120, 66), (240, 201)], 500)
+    if __name__ == '__main__':
+        tapHit(driver)
+        time.sleep(5)
+    #点击个人中心
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_home_img_person').click()
+    time.sleep(2)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_person_tv_nickname').click()
+    #点击实名认证
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_personal_center_rl_realName').click()
+    element = driver.find_element_by_id('com.shunfengche.ride:id/etUserName').send_keys(u"刘少奇")
+    time.sleep(2)
+    element = driver.find_element_by_xpath("//*[@text='请输入您的身份号']").send_keys(410523199612085017)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/bt_next').click()
+    time.sleep(2)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/iv_back').click()
+    element = driver.find_element_by_id('com.shunfengche.ride:id/iv_back').click()
+    element = driver.tap([(0, 66), (168, 234)], 500)
+    time.sleep(2)
+
+    #选择出发地
+    element = driver.find_element_by_id('com.shunfengche.ride:id/layout_home_ride_tv_from')
+    element.click()
+    time.sleep(5)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_map_location_et_position').click()
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_map_location_et_position').send_keys(u"郑州东")
+    time.sleep(2)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/tv_address').click()
+    time.sleep(2)
+    #选择目的地
+    element = driver.find_element_by_id('com.shunfengche.ride:id/layout_home_ride_tv_to').click()
+    time.sleep(5)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_map_location_et_position').click()
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_map_location_et_position').send_keys(u"新郑机场")
+    time.sleep(2)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/tv_address').click()
+    #发布行程页面
+    element = driver.find_element_by_id('com.shunfengche.ride:id/activity_map_location_btn_confirm').click()
+    time.sleep(2)
+    element = driver.find_element_by_id('com.shunfengche.ride:id/fragment_public_tv_publish').click()
+    time.sleep(2)
+except:
+    print("成功")
+    # pass
+time.sleep(2)
+#断开连接
+#driver.quit()
