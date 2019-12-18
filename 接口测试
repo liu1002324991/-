@@ -1,19 +1,33 @@
+from demo import signture
+# 1.导包
 import requests
-import json
-
-new_url = "https://test.pksfc.com/api/user_start_log"
-params = {"Authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjcxZDE2ZDI0MWE0OGU5MTUwYTZjOGM5YjViZDMzN2EwMDQ1YjAwYjBhNjMzYTljYmIzMjg3NDE5NjZmZDdiNDJlMWMwNGVjMzM4OGE2NzRkIn0.eyJhdWQiOiI1IiwianRpIjoiNzFkMTZkMjQxYTQ4ZTkxNTBhNmM4YzliNWJkMzM3YTAwNDViMDBiMGE2MzNhOWNiYjMyODc0MTk2NmZkN2I0MmUxYzA0ZWMzMzg4YTY3NGQiLCJpYXQiOjE1NzMyOTI4NzksIm5iZiI6MTU3MzI5Mjg3OSwiZXhwIjoxNjA0OTE1Mjc5LCJzdWIiOiI0NDM1NDg0Iiwic2NvcGVzIjpbXX0.m7VvYGOziFD3mIVYjEftlqAuBxF4gW9u-zgEpssFbLLsqcN38wkRZvTshRhieNAjoXoOT6XfljylvNtK8FkTRivKaag_x8r89xzgP63bTSCvBnyOOfL0ZCDZaElpHG8bnaHi1qL6d3DAjdU3ztqwKLslZLXhaNZeU9ObOAKJH9h6ut2ztxacAHSbALuqlewI2S8oWZMYbZG2-cTg93YwsdUj9LfpFa0n1Ho5TKCq8LScpfgC_ewj4WNMItKcFmYEls8E7s79VZcsNS-cKHVgtjNr1Lxv2iVUe-pO_M4CXD017kSgHjdXFGvTVQuoDcGMT7xIAkkSZD2nn8zhCdlTuqpjdTZAnUZSg9A3Nx4eFdZ0iEvWkXuIvISuzOKgvKBeNO8BMNBO1HYzzeUhnDubYI_Ii1Gs5nacAZW-Kk4xOpe9mbzMKgo2lWv918DJ1jG4pt_B2dpYxwNufFWSTV7F84NPpUpbVd4ikP2I_z7uyWVElLj8J4xN2yyi3KsnZjljWMAIuoBKvQVMQLzz7b00ABWGlWBNPI0xCA5WFU9Rxn9Iq3P3RhZdmQoqqfqy9j1l0nz8IkhmJX5SR5mVVrzoKYfycv2NAqOWqYmqG0xDqL6sDJ7wWiP-0fVyY7ZlnmT94yZ6NIvYdwnKwCh1aDJrG06QspPg_WJR88X4xJU2gWw"}
-payload = {"user_id": "4435484",
-           "device_id": "866258033598589",
-            "as_driver": "1",
-           "ip": "192.168.31.139",
-           "city": "郑州市",
-           "user_agent": "Mozilla/5.0 (Linux; Android 6.0.1; M2 E Build/MMB29U; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/51.0.2074.204 Mobile Safari/537.36",
-           "os": "android",
-           "app_name": "顺风车乘客端-AN",
-           "app_version": "88",
-           "signature": "6b818ca3787b8c01f70d25e46416458c",
-           }
-
-results = requests.post(new_url, params=params, json=payload).status_code
-print(results)
+# 2.调用post
+# 定义请求url，
+url = 'https://t.pksfc.com/api/smsVerify'
+# 定义请求hesders
+headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+# 请求json
+data = {
+        "phone": "18538285467",
+         "zone": "86",
+         "code": "1133",
+         "os": "Android",
+      }
+data.update(signture=signture(data))
+# 调用post
+response = requests.post(url, data=data, headers=headers)
+# 3.获取相应对象
+print(response)
+# 3.获取请求url地址
+print('请求url地址：', response.url)
+# 4.获取相应状态码
+print('相应状态码：', response.status_code)
+# 5.获取相应信息，文本格式
+print('响应内容：', response.text)
+# 6.获取相应信息，json格式   注意！json格式返回的是一个字典，可以通过键值获取对应信息
+#                                 text格式返回的是一个字符串，
+print('响应内容：', response.json())
+# 把字典格式的response赋值给 【i】
+i = response.json()
+# 通过键值获取数据
+print(i['user_id'])
